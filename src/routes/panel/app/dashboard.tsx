@@ -43,7 +43,7 @@ function DashboardPage() {
       value: activeTokensCount,
       sub: `${tokenHistory.filter(t => t.status === "active").length} active tokens`,
       icon: Coins,
-      to: "/panel/app/tokens",
+      to: "/panel/app/liquidity",
       gradient: "from-primary/20 to-primary-glow/10",
     },
     {
