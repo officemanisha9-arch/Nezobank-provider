@@ -15,6 +15,7 @@ import { Route as PanelAppRouteRouteImport } from './routes/panel/app/route'
 import { Route as PanelAuthLoginRouteImport } from './routes/panel/auth/login'
 import { Route as PanelAppTradesRouteImport } from './routes/panel/app/trades'
 import { Route as PanelAppTokensRouteImport } from './routes/panel/app/tokens'
+import { Route as PanelAppLiquidityRouteImport } from './routes/panel/app/liquidity'
 import { Route as PanelAppDashboardRouteImport } from './routes/panel/app/dashboard'
 import { Route as PanelAppBlogsRouteImport } from './routes/panel/app/blogs'
 import { Route as PanelAppArticlesRouteImport } from './routes/panel/app/articles'
@@ -49,6 +50,11 @@ const PanelAppTokensRoute = PanelAppTokensRouteImport.update({
   path: '/tokens',
   getParentRoute: () => PanelAppRouteRoute,
 } as any)
+const PanelAppLiquidityRoute = PanelAppLiquidityRouteImport.update({
+  id: '/liquidity',
+  path: '/liquidity',
+  getParentRoute: () => PanelAppRouteRoute,
+} as any)
 const PanelAppDashboardRoute = PanelAppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/panel/app/articles': typeof PanelAppArticlesRoute
   '/panel/app/blogs': typeof PanelAppBlogsRoute
   '/panel/app/dashboard': typeof PanelAppDashboardRoute
+  '/panel/app/liquidity': typeof PanelAppLiquidityRoute
   '/panel/app/tokens': typeof PanelAppTokensRoute
   '/panel/app/trades': typeof PanelAppTradesRoute
   '/panel/auth/login': typeof PanelAuthLoginRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/panel/app/articles': typeof PanelAppArticlesRoute
   '/panel/app/blogs': typeof PanelAppBlogsRoute
   '/panel/app/dashboard': typeof PanelAppDashboardRoute
+  '/panel/app/liquidity': typeof PanelAppLiquidityRoute
   '/panel/app/tokens': typeof PanelAppTokensRoute
   '/panel/app/trades': typeof PanelAppTradesRoute
   '/panel/auth/login': typeof PanelAuthLoginRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/panel/app/articles': typeof PanelAppArticlesRoute
   '/panel/app/blogs': typeof PanelAppBlogsRoute
   '/panel/app/dashboard': typeof PanelAppDashboardRoute
+  '/panel/app/liquidity': typeof PanelAppLiquidityRoute
   '/panel/app/tokens': typeof PanelAppTokensRoute
   '/panel/app/trades': typeof PanelAppTradesRoute
   '/panel/auth/login': typeof PanelAuthLoginRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/panel/app/articles'
     | '/panel/app/blogs'
     | '/panel/app/dashboard'
+    | '/panel/app/liquidity'
     | '/panel/app/tokens'
     | '/panel/app/trades'
     | '/panel/auth/login'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/panel/app/articles'
     | '/panel/app/blogs'
     | '/panel/app/dashboard'
+    | '/panel/app/liquidity'
     | '/panel/app/tokens'
     | '/panel/app/trades'
     | '/panel/auth/login'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/panel/app/articles'
     | '/panel/app/blogs'
     | '/panel/app/dashboard'
+    | '/panel/app/liquidity'
     | '/panel/app/tokens'
     | '/panel/app/trades'
     | '/panel/auth/login'
@@ -185,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelAppTokensRouteImport
       parentRoute: typeof PanelAppRouteRoute
     }
+    '/panel/app/liquidity': {
+      id: '/panel/app/liquidity'
+      path: '/liquidity'
+      fullPath: '/panel/app/liquidity'
+      preLoaderRoute: typeof PanelAppLiquidityRouteImport
+      parentRoute: typeof PanelAppRouteRoute
+    }
     '/panel/app/dashboard': {
       id: '/panel/app/dashboard'
       path: '/dashboard'
@@ -213,6 +232,7 @@ interface PanelAppRouteRouteChildren {
   PanelAppArticlesRoute: typeof PanelAppArticlesRoute
   PanelAppBlogsRoute: typeof PanelAppBlogsRoute
   PanelAppDashboardRoute: typeof PanelAppDashboardRoute
+  PanelAppLiquidityRoute: typeof PanelAppLiquidityRoute
   PanelAppTokensRoute: typeof PanelAppTokensRoute
   PanelAppTradesRoute: typeof PanelAppTradesRoute
 }
@@ -221,6 +241,7 @@ const PanelAppRouteRouteChildren: PanelAppRouteRouteChildren = {
   PanelAppArticlesRoute: PanelAppArticlesRoute,
   PanelAppBlogsRoute: PanelAppBlogsRoute,
   PanelAppDashboardRoute: PanelAppDashboardRoute,
+  PanelAppLiquidityRoute: PanelAppLiquidityRoute,
   PanelAppTokensRoute: PanelAppTokensRoute,
   PanelAppTradesRoute: PanelAppTradesRoute,
 }

@@ -11,6 +11,7 @@ const NAV = [
   { to: "/panel/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/panel/app/tokens", label: "Tokens", icon: FileText },
   { to: "/panel/app/trades", label: "Trades", icon: Newspaper },
+  { to: "/panel/app/liquidity", label: "Market Liquidity", icon: Sparkles },
 ] as const;
 
 export function PanelLayout() {
