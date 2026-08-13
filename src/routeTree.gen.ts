@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PanelAuthRouteRouteImport } from './routes/panel/auth/route'
 import { Route as PanelAppRouteRouteImport } from './routes/panel/app/route'
 import { Route as PanelAuthLoginRouteImport } from './routes/panel/auth/login'
+import { Route as PanelAppTradesRouteImport } from './routes/panel/app/trades'
+import { Route as PanelAppTokensRouteImport } from './routes/panel/app/tokens'
 import { Route as PanelAppDashboardRouteImport } from './routes/panel/app/dashboard'
 import { Route as PanelAppBlogsRouteImport } from './routes/panel/app/blogs'
 import { Route as PanelAppArticlesRouteImport } from './routes/panel/app/articles'
@@ -37,6 +39,16 @@ const PanelAuthLoginRoute = PanelAuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => PanelAuthRouteRoute,
 } as any)
+const PanelAppTradesRoute = PanelAppTradesRouteImport.update({
+  id: '/trades',
+  path: '/trades',
+  getParentRoute: () => PanelAppRouteRoute,
+} as any)
+const PanelAppTokensRoute = PanelAppTokensRouteImport.update({
+  id: '/tokens',
+  path: '/tokens',
+  getParentRoute: () => PanelAppRouteRoute,
+} as any)
 const PanelAppDashboardRoute = PanelAppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -60,6 +72,8 @@ export interface FileRoutesByFullPath {
   '/panel/app/articles': typeof PanelAppArticlesRoute
   '/panel/app/blogs': typeof PanelAppBlogsRoute
   '/panel/app/dashboard': typeof PanelAppDashboardRoute
+  '/panel/app/tokens': typeof PanelAppTokensRoute
+  '/panel/app/trades': typeof PanelAppTradesRoute
   '/panel/auth/login': typeof PanelAuthLoginRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +83,8 @@ export interface FileRoutesByTo {
   '/panel/app/articles': typeof PanelAppArticlesRoute
   '/panel/app/blogs': typeof PanelAppBlogsRoute
   '/panel/app/dashboard': typeof PanelAppDashboardRoute
+  '/panel/app/tokens': typeof PanelAppTokensRoute
+  '/panel/app/trades': typeof PanelAppTradesRoute
   '/panel/auth/login': typeof PanelAuthLoginRoute
 }
 export interface FileRoutesById {
@@ -79,6 +95,8 @@ export interface FileRoutesById {
   '/panel/app/articles': typeof PanelAppArticlesRoute
   '/panel/app/blogs': typeof PanelAppBlogsRoute
   '/panel/app/dashboard': typeof PanelAppDashboardRoute
+  '/panel/app/tokens': typeof PanelAppTokensRoute
+  '/panel/app/trades': typeof PanelAppTradesRoute
   '/panel/auth/login': typeof PanelAuthLoginRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +108,8 @@ export interface FileRouteTypes {
     | '/panel/app/articles'
     | '/panel/app/blogs'
     | '/panel/app/dashboard'
+    | '/panel/app/tokens'
+    | '/panel/app/trades'
     | '/panel/auth/login'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +119,8 @@ export interface FileRouteTypes {
     | '/panel/app/articles'
     | '/panel/app/blogs'
     | '/panel/app/dashboard'
+    | '/panel/app/tokens'
+    | '/panel/app/trades'
     | '/panel/auth/login'
   id:
     | '__root__'
@@ -108,6 +130,8 @@ export interface FileRouteTypes {
     | '/panel/app/articles'
     | '/panel/app/blogs'
     | '/panel/app/dashboard'
+    | '/panel/app/tokens'
+    | '/panel/app/trades'
     | '/panel/auth/login'
   fileRoutesById: FileRoutesById
 }
@@ -147,6 +171,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelAuthLoginRouteImport
       parentRoute: typeof PanelAuthRouteRoute
     }
+    '/panel/app/trades': {
+      id: '/panel/app/trades'
+      path: '/trades'
+      fullPath: '/panel/app/trades'
+      preLoaderRoute: typeof PanelAppTradesRouteImport
+      parentRoute: typeof PanelAppRouteRoute
+    }
+    '/panel/app/tokens': {
+      id: '/panel/app/tokens'
+      path: '/tokens'
+      fullPath: '/panel/app/tokens'
+      preLoaderRoute: typeof PanelAppTokensRouteImport
+      parentRoute: typeof PanelAppRouteRoute
+    }
     '/panel/app/dashboard': {
       id: '/panel/app/dashboard'
       path: '/dashboard'
@@ -175,12 +213,16 @@ interface PanelAppRouteRouteChildren {
   PanelAppArticlesRoute: typeof PanelAppArticlesRoute
   PanelAppBlogsRoute: typeof PanelAppBlogsRoute
   PanelAppDashboardRoute: typeof PanelAppDashboardRoute
+  PanelAppTokensRoute: typeof PanelAppTokensRoute
+  PanelAppTradesRoute: typeof PanelAppTradesRoute
 }
 
 const PanelAppRouteRouteChildren: PanelAppRouteRouteChildren = {
   PanelAppArticlesRoute: PanelAppArticlesRoute,
   PanelAppBlogsRoute: PanelAppBlogsRoute,
   PanelAppDashboardRoute: PanelAppDashboardRoute,
+  PanelAppTokensRoute: PanelAppTokensRoute,
+  PanelAppTradesRoute: PanelAppTradesRoute,
 }
 
 const PanelAppRouteRouteWithChildren = PanelAppRouteRoute._addFileChildren(

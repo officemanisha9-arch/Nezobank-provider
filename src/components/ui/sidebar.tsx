@@ -15,7 +15,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
-const SIDEBAR_WIDTH_MOBILE = "18rem";
+// Capped with a vw fallback so the drawer never overflows very narrow phones (e.g. 320px wide).
+const SIDEBAR_WIDTH_MOBILE = "min(20rem, 85vw)";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
@@ -87,6 +88,14 @@ const SidebarProvider = React.forwardRef<
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [toggleSidebar]);
+
+  // Close the mobile drawer automatically if the viewport grows past the mobile breakpoint
+  // while it's open (e.g. rotating a tablet, or resizing a browser window).
+  React.useEffect(() => {
+    if (!isMobile && openMobile) {
+      setOpenMobile(false);
+    }
+  }, [isMobile, openMobile]);
 
   // We add a state so that we can do data-state="expanded" or "collapsed".
   // This makes it easier to style the sidebar with Tailwind classes.
@@ -218,7 +227,8 @@ Sidebar.displayName = "Sidebar";
 
 const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.ComponentProps<typeof Button>>(
   ({ className, onClick, ...props }, ref) => {
-    const { toggleSidebar } = useSidebar();
+    const { toggleSidebar, isMobile, openMobile, open } = useSidebar();
+    const isOpen = isMobile ? openMobile : open;
 
     return (
       <Button
@@ -226,15 +236,18 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
         data-sidebar="trigger"
         variant="ghost"
         size="icon"
-        className={cn("h-7 w-7", className)}
+        // 40px (h-10 w-10) on mobile keeps the tap target comfortable; shrinks back to the
+        // original 28px on md+ where it sits inline with other desktop chrome.
+        className={cn("h-10 w-10 shrink-0 md:h-7 md:w-7", className)}
+        aria-expanded={isOpen}
         onClick={(event) => {
           onClick?.(event);
           toggleSidebar();
         }}
         {...props}
       >
-        <PanelLeft />
-        <span className="sr-only">Toggle Sidebar</span>
+        <PanelLeft className="h-5 w-5 md:h-4 md:w-4" />
+        <span className="sr-only">Toggle sidebar</span>
       </Button>
     );
   },
@@ -300,6 +313,31 @@ const SidebarInput = React.forwardRef<React.ElementRef<typeof Input>, React.Comp
   },
 );
 SidebarInput.displayName = "SidebarInput";
+
+// Sticky mobile header bar: renders the menu toggle + optional title, only below md.
+// Drop this inside SidebarInset (or at the top of your page) so there's always a
+// visible, reachable way to open the sidebar on phones.
+const SidebarMobileHeader = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & { title?: React.ReactNode }
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      data-sidebar="mobile-header"
+      className={cn(
+        "sticky top-0 z-30 flex h-14 items-center gap-2 border-b bg-background/95 px-3 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:hidden",
+        className,
+      )}
+      {...props}
+    >
+      <SidebarTrigger />
+      {title ? <span className="truncate text-sm font-medium">{title}</span> : null}
+      {children}
+    </div>
+  );
+});
+SidebarMobileHeader.displayName = "SidebarMobileHeader";
 
 const SidebarHeader = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(({ className, ...props }, ref) => {
   return <div ref={ref} data-sidebar="header" className={cn("flex flex-col gap-2 p-2", className)} {...props} />;
@@ -445,7 +483,7 @@ const SidebarMenuButton = React.forwardRef<
   } & VariantProps<typeof sidebarMenuButtonVariants>
 >(({ asChild = false, isActive = false, variant = "default", size = "default", tooltip, className, ...props }, ref) => {
   const Comp = asChild ? Slot : "button";
-  const { isMobile, state } = useSidebar();
+  const { isMobile, state, setOpenMobile } = useSidebar();
   const resolvedVariant = variant as SidebarMenuButtonVariant;
   const resolvedSize = size as SidebarMenuButtonSize;
 
@@ -455,7 +493,21 @@ const SidebarMenuButton = React.forwardRef<
       data-sidebar="menu-button"
       data-size={resolvedSize}
       data-active={isActive}
-      className={cn(sidebarMenuButtonVariants({ variant: resolvedVariant, size: resolvedSize }), className)}
+      className={cn(
+        sidebarMenuButtonVariants({ variant: resolvedVariant, size: resolvedSize }),
+        // Slightly taller row on mobile so menu items stay comfortably tappable inside the drawer.
+        "md:h-8",
+        resolvedSize === "default" && "h-11 md:h-8",
+        className,
+      )}
+      onClick={(event) => {
+        props.onClick?.(event as React.MouseEvent<HTMLButtonElement>);
+        // Auto-close the mobile drawer after picking a destination, so users land on the
+        // page instead of the menu staying open over it.
+        if (isMobile) {
+          setOpenMobile(false);
+        }
+      }}
       {...props}
     />
   );
@@ -634,6 +686,7 @@ export {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarMobileHeader,
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,

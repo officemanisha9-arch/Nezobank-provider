@@ -60,9 +60,7 @@ function LoginPage() {
   return (
     <Card className="animate-fade-in w-full max-w-md border-border/60 bg-card/80 shadow-elegant backdrop-blur-xl">
       <CardHeader className="space-y-3 text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-primary shadow-glow">
-          <Sparkles className="h-6 w-6 text-primary-foreground" />
-        </div>
+        <img src="/logo.png" alt="Nezo Panel" className="mx-auto h-10 w-25" />
         <div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Sign in to <span className="panel-gradient-text">Nezo Panel</span>
