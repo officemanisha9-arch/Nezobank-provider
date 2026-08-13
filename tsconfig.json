@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "ignoreDeprecations": "5.0",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "paths": {
+      "react": [
+        "../../node_modules/.bun/react@18.3.1/node_modules/react"
+      ],
+      "react/jsx-runtime": [
+        "../../node_modules/.bun/react@18.3.1/node_modules/react/jsx-runtime"
+      ],
+      "react/jsx-dev-runtime": [
+        "../../node_modules/.bun/react@18.3.1/node_modules/react/jsx-dev-runtime"
+      ],
+      "react-dom": [
+        "../../node_modules/.bun/react-dom@18.3.1+f4eacebf2041cd4f/node_modules/react-dom"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "skipLibCheck": true,
+    "strictNullChecks": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
